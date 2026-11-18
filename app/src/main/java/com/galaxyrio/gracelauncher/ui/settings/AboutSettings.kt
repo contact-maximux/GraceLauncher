@@ -57,14 +57,20 @@ internal fun AboutSettings(onBack: () -> Unit, navigate: (SettingsPage) -> Unit)
             item { SettingsHeading(stringResource(R.string.settings_about_app)) }
             item {
                 SettingsActionItem(
+                    stringResource(R.string.backup_title), stringResource(R.string.backup_summary),
+                    0, 3, "settings_open_backup", leading = { LauncherIcon(LauncherSymbol.Settings) },
+                ) { navigate(SettingsPage.Backup) }
+            }
+            item {
+                SettingsActionItem(
                     stringResource(R.string.settings_changelog), stringResource(R.string.settings_changelog_summary),
-                    0, 2, "settings_open_changelog", leading = { LauncherIcon(LauncherSymbol.Hourglass) },
+                    1, 3, "settings_open_changelog", leading = { LauncherIcon(LauncherSymbol.Hourglass) },
                 ) { navigate(SettingsPage.Changelog) }
             }
             item {
                 SettingsActionItem(
                     stringResource(R.string.settings_licenses), stringResource(R.string.settings_licenses_summary),
-                    1, 2, "settings_open_licenses", leading = { LauncherIcon(LauncherSymbol.Info) },
+                    2, 3, "settings_open_licenses", leading = { LauncherIcon(LauncherSymbol.Info) },
                 ) { navigate(SettingsPage.Licenses) }
             }
         }

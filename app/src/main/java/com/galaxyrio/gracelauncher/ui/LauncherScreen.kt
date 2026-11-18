@@ -556,6 +556,8 @@ fun LauncherRoute(
         applyIconDesign = viewModel::applyIconDesign,
         deleteIconDesigns = viewModel::deleteIconDesigns,
         updateSettings = viewModel::updateSettings,
+        exportBackup = viewModel::exportBackup,
+        restoreBackup = viewModel::restoreBackup,
         setHiddenApps = viewModel::setHiddenApps,
         hideApp = viewModel::hideApp,
         setFolderAutoHide = viewModel::setFolderAutoHide,

@@ -38,6 +38,7 @@ import com.galaxyrio.gracelauncher.data.FavoritesStore
 import com.galaxyrio.gracelauncher.data.LauncherApp
 import com.galaxyrio.gracelauncher.data.LauncherAppOrder
 import com.galaxyrio.gracelauncher.data.LauncherDatabase
+import com.galaxyrio.gracelauncher.data.LauncherBackup
 import com.galaxyrio.gracelauncher.data.LauncherFolder
 import com.galaxyrio.gracelauncher.data.WidgetStackStyle
 import com.galaxyrio.gracelauncher.data.FolderPlacement
@@ -369,6 +370,7 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
     private val preferences = LauncherPreferences(application)
     private val shortcutRepository = ShortcutRepository(application)
     private val settingsRepository = LauncherSettingsRepository(LauncherDatabase.getInstance(application))
+    private val launcherBackup = LauncherBackup(application, LauncherDatabase.getInstance(application))
     private val itemsRepository = LauncherItemsRepository(LauncherDatabase.getInstance(application))
     private val itemIcons = ItemIconStore.get(application, iconPacks)
     private data class StyledShortcuts(val inputs: List<Any?>, val result: ShortcutResult)
@@ -1508,6 +1510,20 @@ class LauncherViewModel(application: Application) : AndroidViewModel(application
 
     fun updateSettings(transform: (LauncherSettings) -> LauncherSettings) = persistSettings {
         settingsRepository.mutateSettings(transform)
+    }
+
+    suspend fun exportBackup(uri: Uri) = launcherBackup.export(uri)
+
+    suspend fun restoreBackup(uri: Uri) {
+        settingsWriteMutex.withLock { launcherBackup.restore(uri) }
+        _uiState.update {
+            it.copy(
+                categories = preferences.categories(),
+                textMode = preferences.textMode,
+                themedIcons = preferences.themedIcons,
+            )
+        }
+        refreshApps()
     }
 
     suspend fun applyAgendaAppearance(style: com.galaxyrio.gracelauncher.data.AgendaAppearance,

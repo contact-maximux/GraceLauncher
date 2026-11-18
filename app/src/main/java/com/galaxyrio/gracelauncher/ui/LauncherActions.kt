@@ -68,6 +68,8 @@ data class LauncherActions(
     val refreshIconPacks: () -> Unit = {},
     val refreshApps: () -> Unit = {},
     val updateSettings: ((LauncherSettings) -> LauncherSettings) -> Unit = {},
+    val exportBackup: suspend (Uri) -> Unit = {},
+    val restoreBackup: suspend (Uri) -> Unit = {},
     val applyClockStyle: suspend (ClockStyle) -> Boolean = { false },
     val applyAgendaAppearance: suspend (AgendaAppearance, HomeLayout?) -> Boolean = { _, _ -> false },
     val discardAgendaWidgetDraft: suspend () -> Boolean = { false },
