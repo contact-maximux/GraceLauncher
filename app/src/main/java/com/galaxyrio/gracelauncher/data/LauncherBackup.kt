@@ -3,6 +3,7 @@ package com.galaxyrio.gracelauncher.data
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.util.Base64
 import androidx.room.withTransaction
@@ -76,7 +77,7 @@ class LauncherBackup(context: Context, private val database: LauncherDatabase) {
                         val key = keys.next()
                         putValue(values, key, decodeDatabaseValue(row.get(key)))
                     }
-                    check(target.insert(table, SupportSQLiteDatabase.CONFLICT_ABORT, values) != -1L) {
+                    check(target.insert(table, SQLiteDatabase.CONFLICT_ABORT, values) != -1L) {
                         "Could not restore launcher data"
                     }
                 }
