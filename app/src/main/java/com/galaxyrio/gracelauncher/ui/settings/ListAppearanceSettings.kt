@@ -132,45 +132,73 @@ internal fun ListAppearanceSettings(uiState: LauncherUiState, actions: LauncherA
                             .testTag("list_appearance_controls"), state = controlsState,
                             contentPadding = PaddingValues(bottom = 96.dp + LocalSettingsBottomInset.current), verticalArrangement = Arrangement.spacedBy(ListItemDefaults.SegmentedGap)) {
                             item("icon_size") {
-                                DesignerSegment(0, 10, "list_icon_size") {
+                                DesignerSegment(0, 14, "list_icon_size") {
                                     Text(stringResource(R.string.icon_designer_icon_size_title))
                                     DesignerSlider(stringResource(R.string.icon_designer_icon_size), iconSize.toFloat(), 100f, 80f..150f,
                                         enabled, "list_icon_size_slider", onFinished = { saveSize() }) { iconSize = it.roundToInt() }
                                 }
                             }
                             item("app_spacing") {
-                                ListSpacingSlider(stringResource(R.string.list_app_spacing), draft.appSpacing, 16, 0..64, 1, "list_app_spacing",
+                                ListSpacingSlider(stringResource(R.string.list_app_spacing), draft.appSpacing, 16, 0..64, 1, 14, "list_app_spacing",
                                     { draft = draft.copy(appSpacing = it) }) { value -> change { it.copy(appSpacing = value) } }
                             }
                             item("side_padding") {
-                                ListSpacingSlider(stringResource(R.string.list_side_padding), draft.sidePadding, 44, 8..80, 2, "list_side_padding",
+                                ListSpacingSlider(stringResource(R.string.list_side_padding), draft.sidePadding, 44, 8..80, 2, 14, "list_side_padding",
                                     { draft = draft.copy(sidePadding = it) }) { value -> change { it.copy(sidePadding = value) } }
                             }
                             item("icon_gap") {
-                                ListSpacingSlider(stringResource(R.string.list_icon_name_gap), draft.iconNameGap, 20, 0..64, 3, "list_icon_name_gap",
+                                ListSpacingSlider(stringResource(R.string.list_icon_name_gap), draft.iconNameGap, 20, 0..64, 3, 14, "list_icon_name_gap",
                                     { draft = draft.copy(iconNameGap = it) }) { value -> change { it.copy(iconNameGap = value) } }
                             }
                             item("symbol_offset") {
                                 ListSpacingSlider(stringResource(R.string.list_symbol_horizontal_offset), draft.symbolHorizontalOffset,
-                                    0, -16..16, 4, "list_symbol_horizontal_offset", { draft = draft.copy(symbolHorizontalOffset = it) },
+                                    0, -16..16, 4, 14, "list_symbol_horizontal_offset", { draft = draft.copy(symbolHorizontalOffset = it) },
                                     centered = true) { value -> change { it.copy(symbolHorizontalOffset = value) } }
                             }
                             item("font") { SettingsActionItem(stringResource(R.string.settings_font), appFontLabel(draft.fontId),
-                                5, 10, "list_font", onClick = { dialog = "font" }) }
+                                5, 14, "list_font", onClick = { dialog = "font" }) }
                             item("font_size") {
-                                ListSpacingSlider(stringResource(R.string.clock_size), draft.fontSize, 16, 10..32, 6, "list_font_size",
+                                ListSpacingSlider(stringResource(R.string.clock_size), draft.fontSize, 16, 10..32, 6, 14, "list_font_size",
                                     { draft = draft.copy(fontSize = it) }, suffix = "sp") { value -> change { it.copy(fontSize = value) } }
                             }
                             item("font_color") {
                                 SettingsActionItem(stringResource(R.string.list_font_color),
                                     fontColorSummary(draft.fontColor, onWallpaper = true),
-                                    7, 10, "list_font_color", modifier = colorModifier("font_color"), trailing = {
+                                    7, 14, "list_font_color", modifier = colorModifier("font_color"), trailing = {
                                         Surface(Modifier.size(24.dp), shape = MaterialTheme.shapes.small,
                                             color = resolvedFontColor(draft.fontColor, onWallpaper = true)) {}
                                     }, onClick = { dialog = "font_color" })
                             }
+                            item("favorite_shadow_opacity") {
+                                ListSpacingSlider(stringResource(R.string.list_favorite_shadow_opacity),
+                                    draft.favoriteLabelShadowOpacity, 95, 0..100, 8, 14, "list_favorite_shadow_opacity",
+                                    { draft = draft.copy(favoriteLabelShadowOpacity = it) }, suffix = "%") { value ->
+                                    change { it.copy(favoriteLabelShadowOpacity = value) }
+                                }
+                            }
+                            item("favorite_shadow_blur") {
+                                ListSpacingSlider(stringResource(R.string.list_favorite_shadow_blur),
+                                    draft.favoriteLabelShadowBlur, 2, 0..24, 9, 14, "list_favorite_shadow_blur",
+                                    { draft = draft.copy(favoriteLabelShadowBlur = it) }) { value ->
+                                    change { it.copy(favoriteLabelShadowBlur = value) }
+                                }
+                            }
+                            item("favorite_shadow_x") {
+                                ListSpacingSlider(stringResource(R.string.list_favorite_shadow_x),
+                                    draft.favoriteLabelShadowX, 0, -16..16, 10, 14, "list_favorite_shadow_x",
+                                    { draft = draft.copy(favoriteLabelShadowX = it) }, centered = true) { value ->
+                                    change { it.copy(favoriteLabelShadowX = value) }
+                                }
+                            }
+                            item("favorite_shadow_y") {
+                                ListSpacingSlider(stringResource(R.string.list_favorite_shadow_y),
+                                    draft.favoriteLabelShadowY, 1, -16..16, 11, 14, "list_favorite_shadow_y",
+                                    { draft = draft.copy(favoriteLabelShadowY = it) }, centered = true) { value ->
+                                    change { it.copy(favoriteLabelShadowY = value) }
+                                }
+                            }
                             item("names") {
-                                DesignerSegment(8, 10, "list_show_names") {
+                                DesignerSegment(12, 14, "list_show_names") {
                                     Text(stringResource(R.string.list_show_names))
                                     Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min).padding(top = 12.dp),
                                         horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)) {
@@ -198,7 +226,7 @@ internal fun ListAppearanceSettings(uiState: LauncherUiState, actions: LauncherA
                             }
                             item("names_in_folders") {
                                 SettingsToggleItem(stringResource(R.string.list_names_in_folders), null,
-                                    draft.applyNameVisibilityToFolders, 9, 10, "list_names_in_folders", enabled = enabled) { value ->
+                                    draft.applyNameVisibilityToFolders, 13, 14, "list_names_in_folders", enabled = enabled) { value ->
                                     change { it.copy(applyNameVisibilityToFolders = value) }
                                 }
                             }
@@ -220,9 +248,9 @@ internal fun ListAppearanceSettings(uiState: LauncherUiState, actions: LauncherA
 }
 
 @Composable
-private fun ListSpacingSlider(label: String, value: Int, default: Int, range: IntRange, index: Int, tag: String,
+private fun ListSpacingSlider(label: String, value: Int, default: Int, range: IntRange, index: Int, count: Int, tag: String,
     onPreview: (Int) -> Unit, suffix: String = "dp", centered: Boolean = false, onCommit: (Int) -> Unit) {
-    DesignerSegment(index, 10, tag) {
+    DesignerSegment(index, count, tag) {
         DesignerSlider(label, value.toFloat(), default.toFloat(), range.first.toFloat()..range.last.toFloat(),
             LocalSettingsStorageState.current.canEdit, "${tag}_slider", suffix, centered = centered,
             onFinished = { onCommit(it.roundToInt()) }, onChange = { onPreview(it.roundToInt()) })

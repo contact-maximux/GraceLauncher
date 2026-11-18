@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Size
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -34,15 +36,25 @@ internal val ListAppearance.startPadding: Dp get() = (sidePadding - 8).coerceAtL
 internal val ListAppearance.endPadding: Dp get() = (sidePadding + 12).dp
 
 @Composable
-internal fun listLabelStyle(onWallpaper: Boolean = true): TextStyle {
+internal fun listLabelStyle(onWallpaper: Boolean = true, favoriteLabel: Boolean = false): TextStyle {
     val list = LocalListAppearance.current
     val wallpaper = LocalLauncherAppearance.current
+    val density = LocalDensity.current
     // The list color overrides wallpaper rows; pop-up content follows its Surface theme.
     val color = if (onWallpaper) resolvedFontColor(list.fontColor, onWallpaper = true)
         else MaterialTheme.colorScheme.onSurface
+    val shadow = when {
+        favoriteLabel -> with(density) {
+            Shadow(Color.Black.copy(alpha = list.favoriteLabelShadowOpacity / 100f),
+                blurRadius = list.favoriteLabelShadowBlur.dp.toPx(),
+                offset = Offset(list.favoriteLabelShadowX.dp.toPx(), list.favoriteLabelShadowY.dp.toPx()))
+        }
+        onWallpaper -> wallpaper.textShadow
+        else -> null
+    }
     return MaterialTheme.typography.bodyLarge.copy(fontFamily = rememberAppFontFamily(list.fontId),
         fontSize = list.fontSize.sp, lineHeight = (list.fontSize * 1.5f).sp, fontWeight = FontWeight.Normal,
-        color = color, letterSpacing = 0.2.sp, shadow = if (onWallpaper) wallpaper.textShadow else null)
+        color = color, letterSpacing = 0.2.sp, shadow = shadow)
 }
 
 /** Shared desktop columns, including the otherwise invisible touch surfaces. */
