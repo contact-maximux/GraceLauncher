@@ -8,13 +8,13 @@ plugins {
 
 android {
     namespace = "com.galaxyrio.gracelauncher"
-    compileSdk = 36
+    compileSdk = 37
     buildToolsVersion = "36.1.0"
 
     defaultConfig {
         applicationId = "com.galaxyrio.gracelauncher"
         minSdk = 28
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 16
         versionName = "1.2.4"
 
@@ -22,6 +22,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         release {
             optimization {
                 enable = true
@@ -77,6 +80,7 @@ dependencies {
     implementation(libs.aboutlibraries.core)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.org.json)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)

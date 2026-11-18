@@ -59,6 +59,10 @@ data class ListAppearance(
     val applyNameVisibilityToFolders: Boolean = false,
     val appList: AppListLayout = AppListLayout(),
     val symbolHorizontalOffset: Int = 0,
+    val favoriteLabelShadowOpacity: Int = 95,
+    val favoriteLabelShadowBlur: Int = 2,
+    val favoriteLabelShadowX: Int = 0,
+    val favoriteLabelShadowY: Int = 1,
 ) {
     fun showNames(favorites: Boolean, insideFolder: Boolean = false): Boolean =
         if (insideFolder && !applyNameVisibilityToFolders) true else when (names) {
@@ -71,6 +75,10 @@ data class ListAppearance(
     fun normalized() = copy(appSpacing = appSpacing.coerceIn(0, 64), sidePadding = sidePadding.coerceIn(8, 80),
         iconNameGap = iconNameGap.coerceIn(0, 64), fontSize = fontSize.coerceIn(10, 32), alphabet = alphabet.normalized(),
         symbolHorizontalOffset = symbolHorizontalOffset.coerceIn(-16, 16),
+        favoriteLabelShadowOpacity = favoriteLabelShadowOpacity.coerceIn(0, 100),
+        favoriteLabelShadowBlur = favoriteLabelShadowBlur.coerceIn(0, 24),
+        favoriteLabelShadowX = favoriteLabelShadowX.coerceIn(-16, 16),
+        favoriteLabelShadowY = favoriteLabelShadowY.coerceIn(-16, 16),
         recentlyInstalledName = recentlyInstalledName?.trim()?.takeIf(String::isNotEmpty), appList = appList.normalized())
 
     fun encode(): String = normalized().let { safe -> JSONObject().apply {
@@ -85,6 +93,10 @@ data class ListAppearance(
         put("recentlyInstalledName", safe.recentlyInstalledName ?: JSONObject.NULL)
         put("appList", safe.appList.json())
         put("symbolHorizontalOffset", safe.symbolHorizontalOffset)
+        put("favoriteLabelShadowOpacity", safe.favoriteLabelShadowOpacity)
+        put("favoriteLabelShadowBlur", safe.favoriteLabelShadowBlur)
+        put("favoriteLabelShadowX", safe.favoriteLabelShadowX)
+        put("favoriteLabelShadowY", safe.favoriteLabelShadowY)
     }.toString() }
 
     companion object {
@@ -105,6 +117,10 @@ data class ListAppearance(
                 recentlyInstalledName = if (value.isNull("recentlyInstalledName")) null else value.optString("recentlyInstalledName"),
                 appList = AppListLayout.decode(value.optJSONObject("appList")),
                 symbolHorizontalOffset = value.optInt("symbolHorizontalOffset", 0),
+                favoriteLabelShadowOpacity = value.optInt("favoriteLabelShadowOpacity", 95),
+                favoriteLabelShadowBlur = value.optInt("favoriteLabelShadowBlur", 2),
+                favoriteLabelShadowX = value.optInt("favoriteLabelShadowX", 0),
+                favoriteLabelShadowY = value.optInt("favoriteLabelShadowY", 1),
             ).normalized()
         }.getOrElse { ListAppearance() }
     }

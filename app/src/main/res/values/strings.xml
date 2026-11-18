@@ -881,6 +881,10 @@
     <string name="list_side_padding">List side margins</string>
     <string name="list_icon_name_gap">Icon and name spacing</string>
     <string name="list_font_color">Font color</string>
+    <string name="list_favorite_shadow_opacity">Favorite label shadow opacity</string>
+    <string name="list_favorite_shadow_blur">Favorite label shadow blur</string>
+    <string name="list_favorite_shadow_x">Favorite label shadow horizontal offset</string>
+    <string name="list_favorite_shadow_y">Favorite label shadow vertical offset</string>
     <string name="list_color_default">Follow default font color</string>
     <string name="list_show_names">Show app names</string>
     <string name="list_names_in_folders">Also apply inside folders</string>
